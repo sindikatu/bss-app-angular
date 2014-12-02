@@ -1,0 +1,20 @@
+
+		<header ng-controller="CabeceraController">
+			<h1>
+				B<span>/</span>SS
+				<em translate>Historico
+				</em>
+			</h1>
+			<ul>
+				<li><a ng-click='cambiarIdioma("eu");' hreflang="eu" lang="eu" title="Euskarazko bertsioa" translate>euskara</a></li>
+				<li><a ng-click='cambiarIdioma("es");' hreflang="es" lang="es" title="Versión en español" translate>español</a></li>
+				<li><a ng-click='cambiarIdioma("fr");' hreflang="fr" lang="fr" title="Version français" translate>français</a></li>
+				<li><a ng-click='cambiarIdioma("en");' hreflang="en" lang="en" title="English version" translate>english</a></li>
+			</ul>
+			<ul class="idiomas" ng-if="!mostrarIdiomas">
+				<li><a href="#/menuPrincipal" class="icon-home"></a></li>
+			</ul>
+
+		</header>
+		<div id="content">
+

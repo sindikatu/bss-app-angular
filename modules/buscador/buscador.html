@@ -1,0 +1,136 @@
+<div data-ng-cabecera data-ng-es-menu-principal='0'></div>
+<section>
+	<div class="patrocinador">
+		<a href="#" target="_blank" translate>
+			Clasificación ofrecida por gentileza de <span>Caja Rural de Navarra</span>
+		</a>
+	</div>
+	
+	<h1>
+		<span ng-if="tipoClasificacion === '1'" translate>Clasificación oficial</span>
+		<span ng-if="tipoClasificacion === '2'" translate>Clasificación oficial discapacitados</span>
+		<span ng-if="tipoClasificacion === '3'" translate>Clasificación oficial rollers</span>
+	</h1>
+	<div class="option with-form open">
+		<h3><span translate>Buscador</span></h3>
+		<form id="form1">
+			<fieldset>
+				<legend translate>Buscador</legend>
+				<div class="line">
+					<label for="ano" translate>Año</label>
+					<select ng-model="ano" ng-change = 'cargarCategorias()'>
+						<option ng-repeat="ano in anos" value='{{ano}}'>{{ano}}</option>
+					</select>
+				</div>
+				<div id="la_categoria" class="line">
+					<label for="categoria" translate>{{textoAMostrar}}</label>
+					<select ng-model="categoria">
+						<option value='Todas' translate>Todas</option>
+						<option ng-repeat="cat in categorias" value='{{cat}}'>{{cat}}</option>
+					</select>
+				</div>
+				<div class="line">
+					<label for="nombre" translate>Nombre</label>
+					<input type="text" ng-model="nombre" name="nombre" id="nombre" value="">
+				</div>
+				<div class="line">
+					<label for="apellido" translate>Apellidos</label>
+					<input type="text" ng-model="apellido" name="apellido" id="apellido" value="">
+				</div>
+				<div class="line">
+					<label for="localidad" translate>Localidad</label>
+					<input type="text" ng-model="localidad" name="localidad" id="localidad" value="">
+				</div>
+				<div class="line">
+					<label for="dorsal" translate>Dorsal</label>
+					<input type="text" ng-model="dorsal" name="dorsal" id="dorsal" value="">
+				</div>
+				<div class="button-wrapper">
+					<button ng-click="buscar()" translate>Buscar</button>
+					<!--<input type="submit" name="buscar" id="buscar" value="Buscar">-->
+					
+					&nbsp;
+					<!--<button ng-click="limpiarBusqueda()">Limpiar búsqueda</button>-->
+					<input type="button" name="reset" id="reset" value="Limpiar búsqueda" ng-click="limpiarBusqueda()">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="resultados" id="ancla">
+			<p translate><strong>Se han devuelto</strong> {{numeroResultadosBusqueda}} <strong>resultados.</strong></p>
+			<p><span translate>Última actualización:</span> <strong>{{fechaUltimaActualizacion}}</strong></p>
+			<p class="reclamaciones" translate><span class="icon-warning"></span> Se admitirán reclamaciones <strong>hasta el 22 de noviembre</strong>. La clasificación definitiva saldrá en diciembre.</p>
+	</div>
+				
+	<table ng-if="mostrar" class="table demo table-bordered footable" data-filter="#filter" data-page-size="5" data-page-previous-text="prev" data-page-next-text="next">
+		<thead>
+			<tr>
+				<th class="centrado" data-hide="phone,tablet" translate>Año</th>
+				<th data-toggle="true"  class="centrado selector" translate>Pos. <br />Gen.</th>
+				<th class="multiline"><span class="name" translate>Nombre</span> <span class="surname" translate>Apellidos</span></th>
+				<th data-hide="" class="centrado" translate>Tiempo</th>
+				<th data-hide="phone,tablet" class="centrado" translate>Dorsal</th>
+				<th data-hide="phone,tablet"  class="centrado" translate>Categoría</th>
+				<th data-hide="phone,tablet"  class="centrado" translate>Pos. <br />categoría</th>
+				<th data-hide="phone,tablet" translate>Procedencia</th>
+				<th data-hide="all" translate>Hora Salida</th>
+				<th data-hide="all" translate>Posición</th>
+				<th data-hide="all" translate>Tiempo Km 5</th>
+				<th data-hide="all" translate>Posición Km 5</th>
+				<th data-hide="all" translate>Tiempo Km 10</th>
+				<th data-hide="all" translate>Posición Km 10</th>
+				<th data-hide="all" translate>Tiempo Km 15</th>
+				<th data-hide="all" translate>Posición Km 15</th>
+				<th data-hide="phone,tablet" class="centrado" translate>Foto</th>
+				<th data-hide="phone,tablet" class="centrado" translate>Vídeo</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="corredor in resultadosBusqueda | paginacion: curPage * pageSize | limitTo: pageSize">
+				<td class="centrado">{{corredor.ano}}</td>
+				<td class="selector">{{corredor.clas_general}}</td>
+				<td class="multiline"><span class="name">{{corredor.nombre}}</span> <span class="surname">{{corredor.apellidos}}</span></td>
+				<td class="centrado">{{corredor.tiempo_real}}</td>
+				<td class="centrado">{{corredor.dorsal}}</td>
+				<td  class="centrado">{{corredor.categoria}}</td>
+				<td class="centrado">{{corredor.clas_categoria}}</td>
+				<td class="multiline">{{corredor.localidad}}</td>
+				<td>{{corredor.hora_salida}}</td>
+				<td>{{corredor.posicion_salida}}</td>
+				<td>{{corredor.tiempo_parcial1}}</td>
+				<td>{{corredor.posicion_parcial1}}</td>
+				<td>{{corredor.tiempo_parcial2}}</td>
+				<td>{{corredor.posicion_parcial2}}</td>
+				<td>{{corredor.tiempo_parcial3}}</td>
+				<td>{{corredor.posicion_parcial3}}</td>
+				<td class="centrado"><a ng-if="corredor.ano >=2013" href="http://www.marathonfoto.com/index.cfm?RaceOID=31782013F1&LastName={{corredor.apellidos}}&BibNumber={{corredor.dorsal}}/Language/es" target="_blank" class="icon-camera"></a></td>
+				<td class="centrado"><a ng-if="corredor.ano >=2013" href="http://www.corriendovoy.com/evento.php?id=961&seccion=atletismo" target="_blank"  class="icon-play"></a></td>
+			</tr>
+			
+		</tbody>
+	</table>
+	<div ng-if="mostrar" class="leyendas">
+		<span class="descalificado">*</span><span translate>Todo/a el/la que se haya adelantado a su hora de salida ha sido descalificado/a</span>
+	</div>
+	<div id="paginacion" class="pagination">
+		
+	  <ul>
+	     <li><button type="button" ng-disabled="curPage == 0" ng-click="curPage=curPage-1"> < </button></li>
+	     
+	     <li><button type="button" ng-disabled="curPage >= resultadosBusqueda.length/pageSize - 1" ng-click="curPage = curPage+1"> > </button></li>
+	  </ul>
+	</div>
+</section>
+
+
+
+
+		
+   
+        
+        
+
+			        
+	
+
+
