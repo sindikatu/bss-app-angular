@@ -1,61 +1,64 @@
 <?php
 
-function get_array_corredores($parametrosBusqueda = '') {
-  //build JSON array
- /*
-  $listado_corredores = array(array("ano" => "2013", "nombre" => "Javier", "apellidos" => "Perez"), array("ano" => "2012", "nombre" => "Javier", "apellidos" => "Perez"), array("ano" => "2013", "nombre" => "Marta", "apellidos" => "Gomez"), array("ano" => "2013", "nombre" => "Asier", "apellidos" => "Sanz"));
-
-  return $listado_corredores;
-*/
-
-  //Comprobamos si recibimos parámetro
-
-  $data = json_decode(file_get_contents("php://input"));
+function obtenerDeportistas() {
+    $data = json_decode(file_get_contents("php://input"));
   
   $filtro = '';
 
   if (isset($data) && isset($data->filter)) {
-  	$filtro = $data->filter;
+    $filtro = $data->filter;
   }  
 
-	/*$server = 'localhost';
-	$user = 'root';
-	$pwd = '';
-	$name = 'ins_bss';*/
+    // LOCAL
+    /*$server = 'localhost';
+    $user = 'root';
+    $pwd = '';
+    $name = 'ins_bss';*/
 
+    // REAL
+    
     $server = '154.58.200.173';
     $user = 'www131';
     $pwd = 'Aqu7Nmb5vP';
     $name = 'www131';
+    
 
-  	// Abrimos la conexion a la Base de Datos
-	$conn = mysql_pconnect($server,$user,$pwd);
+    // ADIMEDIA.NET (IP=82.194.91.28)
+    
+    /*$server = '82.194.91.28'; //localhost
+    $user = 'bssapp';
+    $pwd = 'kA#6l7u1';
+    $name = 'bssapp';*/
+    
 
-	if ($conn) {
-    	// Seleccionamos la base de datos
-    	$seleccionBaseDeDatos = mysql_select_db($name,$conn);
+    // Abrimos la conexion a la Base de Datos
+    $conn = mysql_pconnect($server,$user,$pwd);
 
-    	if ($seleccionBaseDeDatos) {
+    if ($conn) {
+        // Seleccionamos la base de datos
+        $seleccionBaseDeDatos = mysql_select_db($name,$conn);
 
-    		$sql = "SELECT * FROM historico_clasificaciones WHERE visible = '1' ";
+        if ($seleccionBaseDeDatos) {
 
-    		if ($filtro != "") {
-        		$sql .= "and " . $filtro;
-    		}
+            $sql = "SELECT * FROM historico_clasificaciones WHERE visible = '1' ";
+
+            if ($filtro != "") {
+                $sql .= "and " . $filtro;
+            }
 
         $sql .= " ORDER BY ano DESC, nombre ASC";
-			
-    		//Ejecutamos la consulta
-    		$result = mysql_query($sql);
+            
+            //Ejecutamos la consulta
+            $result = mysql_query($sql);
         $numeroResultados = mysql_num_rows($result);
 
-    		if (!$result) {
-        		$listado_corredores = '[]';
-        		
+            if (!$result) {
+                $listado_corredores = '[]';
+                
         } else {
             $listado_corredores = '[';
-    	    	$i = 0;
-        		while($row = mysql_fetch_array($result) ){
+                $i = 0;
+                while($row = mysql_fetch_array($result) ){
                 $corredor = '{';
                 $corredor .= '"id_historico":"' . trim($row["id_historico"]) . '",';
                 $corredor .= '"ano":"' . trim($row["ano"]) . '",';
@@ -84,24 +87,28 @@ function get_array_corredores($parametrosBusqueda = '') {
                     $corredor .= '},';
                 } 
 
-	         	   $listado_corredores .= $corredor;
-    	    	}
+                   $listado_corredores .= $corredor;
+                }
             $listado_corredores .= ']';
-        		// Liberamos memoria
-        		mysql_free_result($result);        		
-	    	}
+                // Liberamos memoria
+                mysql_free_result($result);             
+            }
 
 
-    		mysql_close($conn);
-    	}    	
+            mysql_close($conn);
+        }       
 
     } else {
-		  $listado_corredores = '[]';
-	  } 
+        $listado_corredores = '[]';
+    } 
+    
+    header('Content-Type: application/json');
+    header('AllowedOrigin: *');
+    header('AllowedMethod: POST, GET');
 
-  return $listado_corredores;
+    return $listado_corredores;
 }
 
-//return JSON array
-exit(get_array_corredores());
+  exit(obtenerDeportistas());
+
 ?>
