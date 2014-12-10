@@ -5,7 +5,7 @@ Bss.config = Bss.config || {};
 /*Bss.config.URL_DSP = 'dsp-anahernandez.cloud.dreamfactory.com/';
 Bss.config.DAME_CLASIFICACIONES = 'https://' + Bss.config.URL_DSP + 'rest/sql/historico_clasificaciones?app_name=bssApp';*/
 
-Bss.config.DAME_CLASIFICACIONES = 'api/api.php/';
+Bss.config.DAME_CLASIFICACIONES = 'http://www.adimedia.net/proyectos/bssapp/api/api.php/';
 
 Bss.config.idiomasPorDefecto = 'es';
 Bss.config.idiomasApp = ['es', 'eu', 'en', 'fr'];
