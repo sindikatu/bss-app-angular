@@ -62,8 +62,8 @@
 				<p><span translate>Última actualización:</span> <strong>{{fechaUltimaActualizacion}}</strong></p>
 				<p class="reclamaciones" translate><span class="icon-warning"></span> Se admitirán reclamaciones <strong>hasta el 22 de noviembre</strong>. La clasificación definitiva saldrá en diciembre.</p>
 		</div>
-					
-		<table ng-if="mostrar" class="table demo table-bordered footable" data-filter="#filter" data-page-size="5" data-page-previous-text="prev" data-page-next-text="next">
+
+		<table ng-if="mostrar" class="table footable demo table-bordered" data-filter="#filter" data-page-size="5" data-page-previous-text="prev" data-page-next-text="next">
 			<thead>
 				<tr>
 					<th class="centrado" data-hide="phone,tablet" translate> Año </th>
@@ -90,7 +90,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="corredor in resultadosBusqueda | paginacion: curPage * pageSize | limitTo: pageSize">
+				<tr ng-repeat="corredor in resultadosBusqueda | paginacion: curPage * pageSize | limitTo: pageSize" ng-tabla-responsive>
 					<td class="centrado"> {{corredor.ano}} </td>
 					<td class="selector">
 						{{corredor.clas_general}}
@@ -134,5 +134,6 @@
 		     <li><button type="button" ng-disabled="curPage >= resultadosBusqueda.length/pageSize - 1" ng-click="curPage = curPage+1"> > </button></li>
 		  </ul>
 		</div>
+		
 	</section>
 </div>
